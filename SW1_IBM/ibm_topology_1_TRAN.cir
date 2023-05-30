@@ -17,7 +17,9 @@
 * Directives for simulation
 *************************************************************
 
-.TRAN 1n
+.TRAN 2n
+.STEP PARAM R_s LIST 10 30
+.STEP PARAM R_d LIST 85 50
 .SAVE V(D_3p) V(D_4p)
 
 .end

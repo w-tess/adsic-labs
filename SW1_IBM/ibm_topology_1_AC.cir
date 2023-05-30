@@ -17,7 +17,10 @@
 * Directives for simulation
 *************************************************************
 
+
 .AC LIN 2001 0.02G 40G
+*.STEP PARAM R_s 10 100 20
+*.STEP PARAM R_d 10 100 20
 .PROBE V(D_3p) V(D_4p)
 
 .end

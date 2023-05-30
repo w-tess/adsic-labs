@@ -1,0 +1,84 @@
+* Test board for coupled Signal/Power Integrity simulation
+*
+
+* Include macromodel of board..
+* .. without decaps
+.include board_passive.cir
+xboard a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 0  board_passive
+* .. with decaps
+***.include board_caps_passive.cir
+***xboard a1 a2 a3 a4 a5 a6 a7 a8 a9 a10 a11 a12 a13 0  board_caps_passive
+
+
+* Port terminations..
+* .. line 1
+R1 a1 SIG1 50
+R7 a7 0 50
+* .. line 2
+R8 a8 SIG2 50
+R9 a9 0 50
+* .. line 3
+R10 a10 SIG3 50
+R11 a11 0 50
+* .. unexcited signal ports
+R2 a2 0 50
+R3 a3 0 50
+R4 a4 0 50
+R5 a5 0 50
+R6 a6 0 50
+* .. power ports
+R12 a13 0 1e6
+R13 a12 0 1e6
+
+* Signal excitations ..
+* .. 700MHz pulse train
+V1 SIG1 0 PULSE(0 5 0 0.07e-9 0.07e-9 0.63e-9 1.4e-9)
+***V2 SIG2 0 PULSE(0 5 0 0.07e-9 0.07e-9 0.63e-9 1.4e-9)
+V3 SIG3 0 PULSE(0 5 0 0.07e-9 0.07e-9 0.63e-9 1.4e-9)
+* .. 1300 MHz pulse train
+***V1 SIG1 0 PULSE(0 5 0 0.0385e-9 0.0385e-9 0.3465e-9 0.77e-9)
+***V2 SIG2 0 PULSE(0 5 0 0.0385e-9 0.0385e-9 0.3465e-9 0.77e-9)
+***V3 SIG3 0 PULSE(0 5 0 0.0385e-9 0.0385e-9 0.3465e-9 0.77e-9)
+* .. For eye diagrams
+.param Tbit=0.7e-9 Vp=5 Trise=0.07e-9
+***.param Tbit=0.385e-9 Vp=5
+.option baudrate={1/TBit}
+***xPRBS1 SIG1 0 VPRBS params: TB={TBit} Vmax={Vp} seed=0
+xPRBS2 SIG2 0 VPRBS params: TB={TBit} Vmax={Vp} TR={Trise} seed=0
+***xPRBS3 SIG3 0 VPRBS params: TB={TBit} Vmax={Vp} seed=523
+
+
+
+* Power excitations ..
+* .. VRM with DC and series inductance
+***V1 PWR1 0 5
+***L1 a12 PWR1 10e-9
+* .. core switching (sinusoidal) at 700 MHz
+***I1 a12 0 SINE(0 1 0.7e9)
+* .. core switching (sinusoidal) at 1300 MHz
+***I1 a12 0 SINE(0 1 1.3e9)
+
+
+
+* auxiliary subcircuit to generate a PRBS signal (rise time is zero!)
+* NRZ voltage swing: Vmax; Bit time: TB; Rise/Fall time: TR
+* Use (positive integer) seed to shift PRBS sequence forward (randomize)
+.subckt VPRBS 1 2 params: TB=1 Vmax=5 TR=0.1 seed=0
+.param T=2*TB F=1/T BR=1/TB
+* This generates a PRBS with zero rise times
+B1 a 0 V={Vmax}*(rand(time/{TB}+{seed})>=.5)
+R1 a 0 1
+* This generates a trapezoidal wave with desired rise/fall times
+* (it is a convolution with a pulse with {TR} width, exploiting the piecewise constant nature of signal B1)
+B2 1 2 V= (time/{TR}-{TB}*floor(time/{TB})/{TR})*V(a)  + ({TB}*floor(time/{TB})/{TR} - time/{TR} + 1) * absdelay(V(a),{TR})
+Ro 1 2 1
+.ends
+
+
+
+
+
+* Transient analysis
+.tran 30n
+.save
+.end
