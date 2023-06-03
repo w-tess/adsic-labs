@@ -1,4 +1,5 @@
 *.mat
 *.raw
 *.log
+*.fft
 /Note.txt

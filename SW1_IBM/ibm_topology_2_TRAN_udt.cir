@@ -10,7 +10,10 @@
 
 *************************************************************
 * Include netlist with all components
-.include ibm_topology_2.cir
+*.include ibm_topology_2.cir
+*.include ibm_topology_2.cir
+*.ibm_topology_2_PRBS.cir
+.ibm_topology_2_PRBS_FFE.cir
 *************************************************************
 
 *************************************************************
