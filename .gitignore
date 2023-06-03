@@ -1,0 +1,4 @@
+*.mat
+*.raw
+*.log
+/Note.txt
