@@ -118,9 +118,9 @@ X_Board_Vias_EF
 + E_4p 0 F_4p 0
 + E_5p 0 F_5p 0
 + E_6p 0 F_6p 0
-*+ subckt_1_BoardVia_backdrill
++ subckt_1_BoardVia_backdrill
 * + subckt_2_BoardVia_noStub
- + subckt_3_BoardVia_withStub
+* + subckt_3_BoardVia_withStub
 
 * F-G: Board wires
 X_Board_Wires_FG
@@ -143,9 +143,9 @@ X_Board_Vias_GH
 + H_4p 0 G_4p 0
 + H_5p 0 G_5p 0
 + H_6p 0 G_6p 0
-*+ subckt_1_BoardVia_backdrill
++ subckt_1_BoardVia_backdrill
 * + subckt_2_BoardVia_noStub
- + subckt_3_BoardVia_withStub
+* + subckt_3_BoardVia_withStub
 
 * H-I: LGA socket (NE and FE reversed wrt D-E)
 X_LGA_Socket_HI
@@ -255,6 +255,34 @@ Rdum SIG2 0 1
 R_d a_1 a_2 85
 C_d a_1 a_2 0.4p
 .ends
+
+
+
+.param TB=0.1e-9
+
+Bsum SUM 0 V=V(N_3p)-V(M1)-V(M2)-V(M3)
+
+Bcomp COMP 0 V=if(V(SUM)>125e-3, 1, 0)
+
+
+xDFE1 COMP CLK 0 M1 DFE_BLOCK params: TB={TB} DELAY=1 COEFFICIENT=0.0289431
+xDFE2 COMP CLK 0 M2 DFE_BLOCK params: TB={TB} DELAY=2 COEFFICIENT=-0.0025789
+xDFE3 COMP CLK 0 M3 DFE_BLOCK params: TB={TB} DELAY=3 COEFFICIENT=0.00153182
+*xDFE4 COMP CLK 0 M4 DFE_BLOCK params: TB={TB} DELAY=4 COEFFICIENT=-0.000565475
+*xDFE5 COMP CLK 0 M5 DFE_BLOCK params: TB={TB} DELAY=5 COEFFICIENT=0.00159039
+
+
+* Clock generator to synchrinize fir firter
+Vclk CLK 0 AC 1 180 PULSE({TB/2} 1 0 1p 1p 650p {TB})
+
+* Node1=V_in; Node2=V_clk; Node3=gnd; Node4=V_out
+.subckt DFE_BLOCK 1 2 3 4 params: TB=1 DELAY=1 COEFFICIENT=1
+R1 1 3 1e9
+B1 N001 3 V=delay(V(1), {DELAY}*{TB})*{COEFFICIENT}
+A3 N001 3 2 0 0 0 4 0 SAMPLEHOLD
+.ends
+
+
 
 
 

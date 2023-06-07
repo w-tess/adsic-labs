@@ -237,18 +237,19 @@ X_FE_term3
 + diffTermination4nodes
 
 
-
+.param R_s=10 Tbit=0.1e-9 Vp=1 Trise=0.02e-9
 * Driver (pure differential, no grounding here)
 .subckt diffDriver4nodes a_1 b_1 a_2 b_2
 *R_s1 a_1 a_10 30
 R_s1 a_1 a_10 30
 R_s2 a_2 a_20 30
-E_s1 a_10 b_1 drv 0 0.5
-E_s2 a_20 b_2 drv 0 -0.5
+E_s1 a_10 b_1 SIG2 0 0.5
+E_s2 a_20 b_2 SIG2 0 -0.5
 *Vdrv drv 0 DC 0 AC 1 pwl(0 0 10p 1 100n 1)
 *Vdrv drv 0 DC 0 AC 1 pwl(0 0 10p 1 40p 1 50p 0 100n 0)
-Vdrv drv 0 DC 0 AC 1 pwl(0 0 20p 1 100p 1 120p 0 100n 0)
-Rdum drv 0 1
+*Vdrv drv 0 DC 0 AC 1 pwl(0 0 20p 1 100p 1 120p 0 100n 0)
+xPRBS2 SIG2 0 VPRBS params: TB={TBit} Vmax={Vp} TR={Trise} seed=0
+Rdum SIG2 0 1
 .ends
 
 * Termination (pure differental, no grounding here)
@@ -277,7 +278,7 @@ R_s2 A_4p A_4p_IDEAL 30
 
 
 * Clock generator to synchrinize fir firter
-Vclk CLK 0 PULSE({TB/2} 1 0 1p 1p 50p {TB})
+Vclk CLK 0 AC 1 180 PULSE({TB/2} 1 0 1p 1p 50p {TB})
 
 * Node1=V_in; Node2=V_clk; Node3=gnd; Node4=V_out
 .subckt FFE_BLOCK 1 2 3 4 params: TB=1 DELAY=1 COEFFICIENT=1
@@ -289,3 +290,16 @@ A3 N001 3 2 0 0 0 4 0 SAMPLEHOLD
 
 
 
+* auxiliary subcircuit to generate a PRBS signal (rise time is zero!)
+* NRZ voltage swing: Vmax; Bit time: TB; Rise/Fall time: TR
+* Use (positive integer) seed to shift PRBS sequence forward (randomize)
+.subckt VPRBS 1 2 params: TB=1 Vmax=5 TR=0.1 seed=0
+.param T=2*TB F=1/T BR=1/TB
+* This generates a PRBS with zero rise times
+B1 a 0 V={Vmax}*(rand(time/{TB}+{seed})>=.5)
+R1 a 0 1
+* This generates a trapezoidal wave with desired rise/fall times
+* (it is a convolution with a pulse with {TR} width, exploiting the piecewise constant nature of signal B1)
+B2 1 2 V= (time/{TR}-{TB}*floor(time/{TB})/{TR})*V(a)  + ({TB}*floor(time/{TB})/{TR} - time/{TR} + 1) * absdelay(V(a),{TR})
+Ro 1 2 1
+.ends
