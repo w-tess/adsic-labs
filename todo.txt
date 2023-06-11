@@ -5,6 +5,8 @@ Topologia 1:
 	rifare risposta ad impulso più lungo (basta scommentare dalla netlist) usare solo configurazione migliore (con anche driver e terminazione migliore)
 	rivedere anche crosstalk (conf migliore)
 	
+	diagrammi ad occhi (due bitrate e magari crosstalk)
+	
 Topologia 2:
 	3) vedere differenti combinazioni; step di capacità terminazioni; step di resitentenza driver; risposta ad inpulso (con durate diverse); crosstalk
 	
