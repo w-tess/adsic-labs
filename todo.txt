@@ -1,0 +1,19 @@
+
+Topologia 1:
+	rivedere le topologie fatte (controllare che non ci siano errori nei nomi delle risposte nel dominio del tempo)
+	rifare simulazioni con step della capacità di terminazione e resistenza del driver (usare solo configurazione migliore)
+	rifare risposta ad impulso più lungo (basta scommentare dalla netlist) usare solo configurazione migliore (con anche driver e terminazione migliore)
+	rivedere anche crosstalk (conf migliore)
+	
+Topologia 2:
+	3) vedere differenti combinazioni; step di capacità terminazioni; step di resitentenza driver; risposta ad inpulso (con durate diverse); crosstalk
+	
+	diagramma ad occhio di canale migiore e canale pegiore (con stesse terminazioni) per entrmbi i data rates
+	equalizzazioni con configurazione migliore (se poi non cambia niente si può provare con un canale peggiore)
+	fare step diagramma ad occhio con data rate crescente
+	
+	
+	
+	1 Marco
+	2 Wiliam
+	3 Emilio
