@@ -18,8 +18,8 @@
 *************************************************************
 
 .TRAN 2n
-.STEP PARAM R_s LIST 10 30
-.STEP PARAM R_d LIST 85 50
+*.STEP PARAM R_s 10 100 10
+*.STEP PARAM C_d 0.1p 1p 0.1p
 .SAVE V(D_3p) V(D_4p)
 
 .end

@@ -70,7 +70,7 @@ X_Module_BC
 + B_5p 0 C_5p 0
 + B_6p 0 C_6p 0
 * + subckt_8_Module_wire_1mm_highloss_85ohm
-+ subckt_9_Module_wire_1mm_lowloss_85ohm
+ + subckt_9_Module_wire_1mm_lowloss_85ohm
 * + subckt_10_Module_wire_5mm_highloss_85ohm
 * + subckt_11_Module_wire_5mm_lowloss_85ohm
 
@@ -130,18 +130,18 @@ X_FE_term3
 + diffTermination4nodes
 
 
-.param R_s=10 Tbit=0.05e-9 Vp=1 Trise=0.01e-9
+.param R_s=30 Tbit=0.05e-9 Vp=1 Trise=0.01e-9
 * Driver (pure differential, no grounding here)
 .subckt diffDriver4nodes a_1 b_1 a_2 b_2
 R_s1 a_1 a_10 {R_s}
 R_s2 a_2 a_20 {R_s}
-E_s1 a_10 b_1 SIG2 0 0.5
-E_s2 a_20 b_2 SIG2 0 -0.5
+E_s1 a_10 b_1 drv 0 0.5
+E_s2 a_20 b_2 drv 0 -0.5
 * Vdrv drv 0 DC 0 AC 1 pwl(0 0 10p 1 100n 1)
-* Vdrv drv 0 DC 0 AC 1 pwl(0 0 10p 1 50p 1 60p 0 100n 0)
+ Vdrv drv 0 DC 0 AC 1 pwl(0 0 10p 1 50p 1 60p 0 100n 0)
 * Vdrv drv 0 DC 0 AC 1 pwl(0 0 20p 1 100p 1 120p 0 100n 0)
-xPRBS2 SIG2 0 VPRBS params: TB={TBit} Vmax={Vp} TR={Trise} seed=0
-Rdum SIG2 0 1
+* xPRBS2 SIG2 0 VPRBS params: TB={TBit} Vmax={Vp} TR={Trise} seed=0
+Rdum drv 0 1
 .ends
 
 
