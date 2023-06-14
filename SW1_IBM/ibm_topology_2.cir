@@ -239,8 +239,8 @@ X_FE_term3
 
 * Driver (pure differential, no grounding here)
 .subckt diffDriver4nodes a_1 b_1 a_2 b_2
-R_s1 a_1 a_10 30
-R_s2 a_2 a_20 30
+R_s1 a_1 a_10 10
+R_s2 a_2 a_20 10
 E_s1 a_10 b_1 drv 0 0.5
 E_s2 a_20 b_2 drv 0 -0.5
 *Vdrv drv 0 DC 0 AC 1 pwl(0 0 10p 1 100n 1)
@@ -249,7 +249,7 @@ Vdrv drv 0 DC 0 AC 1 pwl(0 0 20p 1 100p 1 120p 0 100n 0)
 Rdum drv 0 1
 .ends
 
-.param Cd=0.4p
+.param Cd=0.1p
 * Termination (pure differental, no grounding here)
 .subckt diffTermination4nodes a_1 b_1 a_2 b_2
 R_d a_1 a_2 85
