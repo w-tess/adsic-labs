@@ -74,8 +74,8 @@ X_C4_AB
 + A_4p 0 B_4p 0
 + A_5p 0 B_5p 0
 + A_6p 0 B_6p 0
-+ subckt_4_C4escape_1mm_highloss_85ohm
-* + subckt_5_C4escape_1mm_lowloss_85ohm
+*+ subckt_4_C4escape_1mm_highloss_85ohm
+ + subckt_5_C4escape_1mm_lowloss_85ohm
 
 * B-C: Module wiring (comment/uncomment to select model)
 X_Module_BC
@@ -86,8 +86,8 @@ X_Module_BC
 + B_5p 0 C_5p 0
 + B_6p 0 C_6p 0
 * + subckt_8_Module_wire_1mm_highloss_85ohm
-* + subckt_9_Module_wire_1mm_lowloss_85ohm
-+ subckt_10_Module_wire_5mm_highloss_85ohm
+ + subckt_9_Module_wire_1mm_lowloss_85ohm
+*+ subckt_10_Module_wire_5mm_highloss_85ohm
 * + subckt_11_Module_wire_5mm_lowloss_85ohm
 
 * C-D: Module vias
@@ -118,9 +118,9 @@ X_Board_Vias_EF
 + E_4p 0 F_4p 0
 + E_5p 0 F_5p 0
 + E_6p 0 F_6p 0
-*+ subckt_1_BoardVia_backdrill
++ subckt_1_BoardVia_backdrill
 * + subckt_2_BoardVia_noStub
- + subckt_3_BoardVia_withStub
+* + subckt_3_BoardVia_withStub
 
 * F-G: Board wires
 X_Board_Wires_FG
@@ -131,8 +131,8 @@ X_Board_Wires_FG
 + F_5p 0 G_5p 0
 + F_6p 0 G_6p 0
 * + subckt_12_PCB_wire_0p25inch_highloss_85ohm
-* + subckt_13_PCB_wire_0p25inch_lowloss_85ohm
-+ subckt_14_PCB_wire_2p0inch_highloss_85ohm
+ + subckt_13_PCB_wire_0p25inch_lowloss_85ohm
+*+ subckt_14_PCB_wire_2p0inch_highloss_85ohm
 * + subckt_15_PCB_wire_2p0inch_lowloss_85ohm
 
 * G-H: Board vias (NE and FE reversed wrt E-F)
@@ -143,9 +143,9 @@ X_Board_Vias_GH
 + H_4p 0 G_4p 0
 + H_5p 0 G_5p 0
 + H_6p 0 G_6p 0
-*+ subckt_1_BoardVia_backdrill
++ subckt_1_BoardVia_backdrill
 * + subckt_2_BoardVia_noStub
- + subckt_3_BoardVia_withStub
+* + subckt_3_BoardVia_withStub
 
 * H-I: LGA socket (NE and FE reversed wrt D-E)
 X_LGA_Socket_HI
@@ -176,8 +176,8 @@ X_Module_LM
 + L_5p 0 M_5p 0
 + L_6p 0 M_6p 0
 * + subckt_8_Module_wire_1mm_highloss_85ohm
-* + subckt_9_Module_wire_1mm_lowloss_85ohm
-+ subckt_10_Module_wire_5mm_highloss_85ohm
+ + subckt_9_Module_wire_1mm_lowloss_85ohm
+* + subckt_10_Module_wire_5mm_highloss_85ohm
 * + subckt_11_Module_wire_5mm_lowloss_85ohm
 
 * M-N: C4 escape wire: far end (comment/uncomment to select model)
@@ -188,8 +188,8 @@ X_C4_MN
 + M_4p 0 N_4p 0
 + M_5p 0 N_5p 0
 + M_6p 0 N_6p 0
-+ subckt_4_C4escape_1mm_highloss_85ohm
-* + subckt_5_C4escape_1mm_lowloss_85ohm
+*+ subckt_4_C4escape_1mm_highloss_85ohm
++ subckt_5_C4escape_1mm_lowloss_85ohm
 
 
 *************************************************************
@@ -239,8 +239,8 @@ X_FE_term3
 .param R_s=10 Tbit=0.1e-9 Vp=1 Trise=0.02e-9
 * Driver (pure differential, no grounding here)
 .subckt diffDriver4nodes a_1 b_1 a_2 b_2
-R_s1 a_1 a_10 30
-R_s2 a_2 a_20 30
+R_s1 a_1 a_10 10
+R_s2 a_2 a_20 10
 E_s1 a_10 b_1 SIG2 0 0.5
 E_s2 a_20 b_2 SIG2 0 -0.5
 *Vdrv drv 0 DC 0 AC 1 pwl(0 0 10p 1 100n 1)
@@ -253,7 +253,7 @@ Rdum SIG2 0 1
 * Termination (pure differental, no grounding here)
 .subckt diffTermination4nodes a_1 b_1 a_2 b_2
 R_d a_1 a_2 85
-C_d a_1 a_2 0.4p
+C_d a_1 a_2 0.1p
 .ends
 
 
