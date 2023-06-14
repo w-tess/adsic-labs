@@ -76,7 +76,7 @@ legend('FE line 1', 'FE line 2', 'FE line 3', 'Location', 'northwest')
 xlabel('Time (s)') 
 ylabel('Voltage (V)')
 title('Far end voltages of the three lines at 28.7 GHz (phase shift between drivers = 0°)')
-xlim([0, 1.2e-9])
+xlim([1e-9, 1.2e-9])
 
 
 figure(4)
@@ -93,7 +93,7 @@ legend('FE line 1', 'FE line 2', 'FE line 3', 'Location', 'northwest')
 xlabel('Time (s)') 
 ylabel('Voltage (V)')
 title('Far end voltages of the three lines at 28.7 GHz (phase shift between drivers = 180°)')
-xlim([0, 1.2e-9])
+xlim([1e-9, 1.2e-9])
 
 
 

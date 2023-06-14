@@ -110,7 +110,8 @@ X_NE_term2
 + A_3p 0
 + A_4p 0
 *+ diffDriver4nodes
-+ diffTermination4nodes
+*+ diffTermination4nodes
++ diffDriver4nodes3
 
 
 * Termination, differential line 2, far end
@@ -168,10 +169,38 @@ Rdum drv 0 1
 .ends
 
 
+.param Tbit=0.05e-9 Vp=1 Trise=0.01e-9
+* Driver (pure differential, no grounding here)
+.subckt diffDriver4nodes3 a_1 b_1 a_2 b_2
+R_s1 a_1 a_10 {R_s}
+R_s2 a_2 a_20 {R_s}
+E_s1 a_10 b_1 SIG 0 0.5
+E_s2 a_20 b_2 SIG 0 -0.5
+xPRBS SIG 0 VPRBS params: TB={TBit} Vmax={Vp} TR={Trise} seed=0
+Rdum SIG 0 1
+.ends
+
 .param R_d=85 C_d=0.1p
 * Termination (pure differental, no grounding here)
 .subckt diffTermination4nodes a_1 b_1 a_2 b_2
 R_d a_1 a_2 {R_d}
 C_d a_1 a_2 {C_d}
+.ends
+
+
+
+
+* auxiliary subcircuit to generate a PRBS signal (rise time is zero!)
+* NRZ voltage swing: Vmax; Bit time: TB; Rise/Fall time: TR
+* Use (positive integer) seed to shift PRBS sequence forward (randomize)
+.subckt VPRBS 1 2 params: TB=1 Vmax=5 TR=0.1 seed=0
+.param T=2*TB F=1/T BR=1/TB
+* This generates a PRBS with zero rise times
+B1 a 0 V={Vmax}*(rand(time/{TB}+{seed})>=.5)
+R1 a 0 1
+* This generates a trapezoidal wave with desired rise/fall times
+* (it is a convolution with a pulse with {TR} width, exploiting the piecewise constant nature of signal B1)
+B2 1 2 V= (time/{TR}-{TB}*floor(time/{TB})/{TR})*V(a)  + ({TB}*floor(time/{TB})/{TR} - time/{TR} + 1) * absdelay(V(a),{TR})
+Ro 1 2 1
 .ends
 
