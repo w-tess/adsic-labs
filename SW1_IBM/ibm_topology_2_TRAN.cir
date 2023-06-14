@@ -11,17 +11,27 @@
 *************************************************************
 * Include netlist with all components
 *.include ibm_topology_2.cir
+<<<<<<< HEAD
 .include ibm_topology_2_PRBS.cir
+=======
+*.include ibm_topology_2_PRBS.cir
+*.include ibm_topology_2_FFE.cir
+>>>>>>> 889ab2f7351071f937d2cc277a0375b8f388767a
 *.include ibm_topology_2_PRBS_FFE.cir
 *.include ibm_topology_2_DFE.cir
 *.include ibm_topology_2_PRBS_DFE.cir
+*.include ibm_topology_2_CTLE.cir
+*.include ibm_topology_2_PRBS_CTLE.cir
 *************************************************************
 
 *************************************************************
 * Directives for simulation
 *************************************************************
+<<<<<<< HEAD
 *.step param RS 10 100 10
 *.opt  plotwinsize=0
+=======
+>>>>>>> 889ab2f7351071f937d2cc277a0375b8f388767a
 .TRAN 20n
 *.TRAN 1.5n
 *.PROBE V(N_3p) V(N_4p) V(SUM) V(COMP)
