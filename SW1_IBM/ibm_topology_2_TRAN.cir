@@ -26,7 +26,7 @@
 *************************************************************
 *.step param RS 10 100 10
 *.opt  plotwinsize=0
-.TRAN 0 2n 275p
+.TRAN 0 20n 275p
 *.TRAN 1.5n
 *.PROBE V(N_3p) V(N_4p) V(SUM) V(COMP)
 

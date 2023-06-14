@@ -272,7 +272,7 @@ xDFE7 INT6 CLK 0 M7 INT7 DFE_BLOCK params: TB={TB} DELAY=7 COEFFICIENT=-0.000169
 
 
 * Clock generator to synchrinize fir firter
-Vclk CLK 0 AC 1 180 PULSE(0 1 20p 1p 1p {TB/2} {TB})
+Vclk CLK 0 PULSE(0 1 0p 1p 1p {TB/2} {TB})
 
 * Node1=V_in; Node2=V_clk; Node3=gnd; Node4=V_out
 .subckt DFE_BLOCK 1 2 3 4 5 params: TB=1 DELAY=1 COEFFICIENT=1
