@@ -17,7 +17,9 @@
 *************************************************************
 * Directives for simulation
 *************************************************************
-.step param Cd 0.1p 1p 0.1p
+
+.step param Rs 10 100 10
+*.step param Cd 0.1p 1p 0.1p
 .AC LIN 2001 0.02G 40G
 .PROBE V(N_3p) V(N_4p) V(CTLE_OUT) V(CTLE_OUT_DIFF)
 
