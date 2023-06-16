@@ -236,7 +236,7 @@ X_FE_term3
 + diffTermination4nodes
 
 
-.param Rs=10 Cd=0.1p Tbit=0.2e-9 Vp=1 Trise={Tbit*0.2}
+.param Rs=10 Cd=0.1p Tbit=0.1e-9 Vp=1 Trise={Tbit*0.2}
 * Driver (pure differential, no grounding here)
 .subckt diffDriver4nodes a_1 b_1 a_2 b_2
 R_s1 a_1 a_10 {Rs}
