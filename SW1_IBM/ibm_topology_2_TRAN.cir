@@ -28,19 +28,19 @@
 *.TRAN 0 40n 400p
 
 * 10 Gbps
-*.TRAN 0 20n 275p
+.TRAN 0 20n 275p
 
 * 25 Gbps
 *.TRAN 0 8n 200p
 
 
-.TRAN 2n
+*.TRAN 2n
 *.PROBE V(N_3p) V(SUM) V(CTLE_OUT)
 
 
 
 *Measures
-.opt  plotwinsize=0
+*.opt  plotwinsize=0
 .param TB=0.1e-9
 .meas TRAN vmax MAX V(N_3p)
 .meas TRAN T0 FIND time WHEN V(N_3p)=vmax
