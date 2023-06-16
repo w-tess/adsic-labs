@@ -1,5 +1,5 @@
 *Measures
-.param TB=0.1e-9
+.param TB=0.2e-9
 .meas TRAN vmax MAX V(N_3p)
 .meas TRAN T0 FIND time WHEN V(N_3p)=vmax
 .MEAS TRAN bit_2 FIND V(N_3p) AT=T0-(2*TB)

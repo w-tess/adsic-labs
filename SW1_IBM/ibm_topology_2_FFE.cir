@@ -211,9 +211,8 @@ X_FE_term1
 
 * Driver, differential line 2, near end
 X_NE_term2
-*+ A_3p 0
 + DRIVER_OUT 0
-+ jhgfd 0
++ NULL 0
 + diffDriver4nodes
 
 
@@ -237,38 +236,39 @@ X_FE_term3
 + diffTermination4nodes
 
 
-
+.param Rs=10 Cd=0.1p Tbit=0.2e-9 Vp=1 Trise={Tbit*0.2}
 * Driver (pure differential, no grounding here)
 .subckt diffDriver4nodes a_1 b_1 a_2 b_2
-*R_s1 a_1 a_10 30
-R_s1 a_1 a_10 10
-R_s2 a_2 a_20 10
+R_s1 a_1 a_10 {Rs}
+R_s2 a_2 a_20 {Rs}
 E_s1 a_10 b_1 drv 0 0.5
 E_s2 a_20 b_2 drv 0 -0.5
 *Vdrv drv 0 DC 0 AC 1 pwl(0 0 10p 1 100n 1)
 *Vdrv drv 0 DC 0 AC 1 pwl(0 0 10p 1 40p 1 50p 0 100n 0)
-Vdrv drv 0 DC 0 AC 1 pwl(0 0 20p 1 100p 1 120p 0 100n 0)
+*Vdrv drv 0 DC 0 AC 1 pwl(0 0 20p 1 100p 1 120p 0 100n 0)
+*Vdrv drv 0 DC 0 AC 1 pwl(0 0 {Trise} 1 {Tbit} 1 {Tbit+Trise} 0 100n 0)
+xPRBS drv 0 VPRBS params: TB={TBit} Vmax={Vp} TR={Trise} seed=0
 Rdum drv 0 1
 .ends
 
 * Termination (pure differental, no grounding here)
 .subckt diffTermination4nodes a_1 b_1 a_2 b_2
 R_d a_1 a_2 85
-C_d a_1 a_2 0.1p
+C_d a_1 a_2 {Cd}
 .ends
 
 
 
-.param TB=0.1n
-BFFEB0 N001 0 V=delay(V(DRIVER_OUT), {TB})*-7.623918197980212e-02
+
+BFFEB0 N001 0 V=delay(V(DRIVER_OUT), {TBit})*-7.623918197980212e-02
 A3 N001 0 CLK 0 0 0 M0 0 SAMPLEHOLD
 
-xFFEB1 DRIVER_OUT CLK 0 M1 FFE_BLOCK params: TB={TB} DELAY=1 COEFFICIENT=-6.436958726140170e-02
-xFFEB2 DRIVER_OUT CLK 0 M2 FFE_BLOCK params: TB={TB} DELAY=2 COEFFICIENT=8.593346296756370e-01
-xFFEB3 DRIVER_OUT CLK 0 M3 FFE_BLOCK params: TB={TB} DELAY=3 COEFFICIENT=5.657064203054559e-05
-xFFEB4 DRIVER_OUT CLK 0 M4 FFE_BLOCK params: TB={TB} DELAY=4 COEFFICIENT=3.043736493321492e-08
-xFFEB5 DRIVER_OUT CLK 0 M5 FFE_BLOCK params: TB={TB} DELAY=5 COEFFICIENT=3.762388212350572e-12
-xFFEB6 DRIVER_OUT CLK 0 M6 FFE_BLOCK params: TB={TB} DELAY=6 COEFFICIENT=1.188044856886521e-15
+xFFEB1 DRIVER_OUT CLK 0 M1 FFE_BLOCK params: TB={TBit} DELAY=1 COEFFICIENT=-6.436958726140170e-02
+xFFEB2 DRIVER_OUT CLK 0 M2 FFE_BLOCK params: TB={TBit} DELAY=2 COEFFICIENT=8.593346296756370e-01
+xFFEB3 DRIVER_OUT CLK 0 M3 FFE_BLOCK params: TB={TBit} DELAY=3 COEFFICIENT=5.657064203054559e-05
+xFFEB4 DRIVER_OUT CLK 0 M4 FFE_BLOCK params: TB={TBit} DELAY=4 COEFFICIENT=3.043736493321492e-08
+xFFEB5 DRIVER_OUT CLK 0 M5 FFE_BLOCK params: TB={TBit} DELAY=5 COEFFICIENT=3.762388212350572e-12
+xFFEB6 DRIVER_OUT CLK 0 M6 FFE_BLOCK params: TB={TBit} DELAY=6 COEFFICIENT=1.188044856886521e-15
 
 Bsum A_3p_IDEAL 0 V=V(M0)+V(M1)+V(M2)+V(M3)+V(M4)+V(M5)+V(M6)
 R_s1 A_3p A_3p_IDEAL 10
@@ -276,8 +276,9 @@ Bsum_minus A_4p_IDEAL 0 V=-(V(M0)+V(M1)+V(M2)+V(M3)+V(M4)+V(M5)+V(M6))
 R_s2 A_4p A_4p_IDEAL 10
 
 
-* Clock generator to synchrinize fir firter
-Vclk CLK 0 AC 1 180 PULSE({TB/2} 1 0 1p 1p 50p {TB})
+* Clock generator to synchronize fir firter
+Vclk CLK 0 AC 1 180 PULSE(0 1 {TBit/2} 1p 1p {TBit/2} {TBit})
+
 
 * Node1=V_in; Node2=V_clk; Node3=gnd; Node4=V_out
 .subckt FFE_BLOCK 1 2 3 4 params: TB=1 DELAY=1 COEFFICIENT=1
@@ -289,3 +290,16 @@ A3 N001 3 2 0 0 0 4 0 SAMPLEHOLD
 
 
 
+* auxiliary subcircuit to generate a PRBS signal (rise time is zero!)
+* NRZ voltage swing: Vmax; Bit time: TB; Rise/Fall time: TR
+* Use (positive integer) seed to shift PRBS sequence forward (randomize)
+.subckt VPRBS 1 2 params: TB=1 Vmax=5 TR=0.1 seed=0
+.param T=2*TB F=1/T BR=1/TB
+* This generates a PRBS with zero rise times
+B1 a 0 V={Vmax}*(rand(time/{TB}+{seed})>=.5)
+R1 a 0 1
+* This generates a trapezoidal wave with desired rise/fall times
+* (it is a convolution with a pulse with {TR} width, exploiting the piecewise constant nature of signal B1)
+B2 1 2 V= (time/{TR}-{TB}*floor(time/{TB})/{TR})*V(a)  + ({TB}*floor(time/{TB})/{TR} - time/{TR} + 1) * absdelay(V(a),{TR})
+Ro 1 2 1
+.ends

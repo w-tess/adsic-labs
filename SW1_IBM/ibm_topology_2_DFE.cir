@@ -236,43 +236,76 @@ X_FE_term3
 + diffTermination4nodes
 
 
-
+.param Rs=10 Cd=0.1p Tbit=0.2e-9 Vp=1 Trise={Tbit*0.2}
 * Driver (pure differential, no grounding here)
 .subckt diffDriver4nodes a_1 b_1 a_2 b_2
-R_s1 a_1 a_10 10
-R_s2 a_2 a_20 10
+R_s1 a_1 a_10 {Rs}
+R_s2 a_2 a_20 {Rs}
 E_s1 a_10 b_1 drv 0 0.5
 E_s2 a_20 b_2 drv 0 -0.5
 *Vdrv drv 0 DC 0 AC 1 pwl(0 0 10p 1 100n 1)
 *Vdrv drv 0 DC 0 AC 1 pwl(0 0 10p 1 40p 1 50p 0 100n 0)
-Vdrv drv 0 DC 0 AC 1 pwl(0 0 20p 1 100p 1 120p 0 100n 0)
+*Vdrv drv 0 DC 0 AC 1 pwl(0 0 20p 1 100p 1 120p 0 100n 0)
+*Vdrv drv 0 DC 0 AC 1 pwl(0 0 {Trise} 1 {Tbit} 1 {Tbit+Trise} 0 100n 0)
+xPRBS drv 0 VPRBS params: TB={TBit} Vmax={Vp} TR={Trise} seed=0
 Rdum drv 0 1
 .ends
 
 * Termination (pure differental, no grounding here)
 .subckt diffTermination4nodes a_1 b_1 a_2 b_2
 R_d a_1 a_2 85
-C_d a_1 a_2 0.1p
+C_d a_1 a_2 {Cd}
 .ends
 
 
 
-.param TB=0.1e-9
+* 5 Gbps
 Bsum SUM 0 V=V(N_3p)-V(M1)-V(M2)-V(M3)-V(M4)-V(M5)-V(M6)-V(M7)
-Bcomp COMP 0 V=if(V(SUM)>182e-3, 1, 0)
+Bcomp COMP 0 V=if(V(SUM)>201e-3, 1, 0)
+
+xDFE1 COMP CLK 0 M1 INT1 DFE_BLOCK params: TB={TBit} DELAY=1 COEFFICIENT=-0.0212433
+xDFE2 INT1 CLK 0 M2 INT2 DFE_BLOCK params: TB={TBit} DELAY=2 COEFFICIENT=0.0289993
+xDFE3 INT2 CLK 0 M3 INT3 DFE_BLOCK params: TB={TBit} DELAY=3 COEFFICIENT=-0.0145152
+xDFE4 INT3 CLK 0 M4 INT4 DFE_BLOCK params: TB={TBit} DELAY=4 COEFFICIENT=-0.00167035
+xDFE5 INT4 CLK 0 M5 INT5 DFE_BLOCK params: TB={TBit} DELAY=5 COEFFICIENT=0.00174987
+xDFE6 INT5 CLK 0 M6 INT6 DFE_BLOCK params: TB={TBit} DELAY=6 COEFFICIENT=0.000882162
+xDFE7 INT6 CLK 0 M7 INT7 DFE_BLOCK params: TB={TBit} DELAY=7 COEFFICIENT=0.0053856
 
 
-xDFE1 COMP CLK 0 M1 INT1 DFE_BLOCK params: TB={TB} DELAY=1 COEFFICIENT=0.027235
-xDFE2 INT1 CLK 0 M2 INT2 DFE_BLOCK params: TB={TB} DELAY=2 COEFFICIENT=0.0343059
-xDFE3 INT2 CLK 0 M3 INT3 DFE_BLOCK params: TB={TB} DELAY=3 COEFFICIENT=-0.0542583
-xDFE4 INT3 CLK 0 M4 INT4 DFE_BLOCK params: TB={TB} DELAY=4 COEFFICIENT=0.0273995
-xDFE5 INT4 CLK 0 M5 INT5 DFE_BLOCK params: TB={TB} DELAY=5 COEFFICIENT=0.00831343
-xDFE6 INT5 CLK 0 M6 INT6 DFE_BLOCK params: TB={TB} DELAY=6 COEFFICIENT=-0.009722
-xDFE7 INT6 CLK 0 M7 INT7 DFE_BLOCK params: TB={TB} DELAY=7 COEFFICIENT=-0.000169723
+
+
+* 10 Gbps
+*Bsum SUM 0 V=V(N_3p)-V(M1)-V(M2)-V(M3)-V(M4)-V(M5)-V(M6)-V(M7)
+*Bcomp COMP 0 V=if(V(SUM)>182e-3, 1, 0)
+
+*xDFE1 COMP CLK 0 M1 INT1 DFE_BLOCK params: TB={TBit} DELAY=1 COEFFICIENT=0.027235
+*xDFE2 INT1 CLK 0 M2 INT2 DFE_BLOCK params: TB={TBit} DELAY=2 COEFFICIENT=0.0343059
+*xDFE3 INT2 CLK 0 M3 INT3 DFE_BLOCK params: TB={TBit} DELAY=3 COEFFICIENT=-0.0542583
+*xDFE4 INT3 CLK 0 M4 INT4 DFE_BLOCK params: TB={TBit} DELAY=4 COEFFICIENT=0.0273995
+*xDFE5 INT4 CLK 0 M5 INT5 DFE_BLOCK params: TB={TBit} DELAY=5 COEFFICIENT=0.00831343
+*xDFE6 INT5 CLK 0 M6 INT6 DFE_BLOCK params: TB={TBit} DELAY=6 COEFFICIENT=-0.009722
+*xDFE7 INT6 CLK 0 M7 INT7 DFE_BLOCK params: TB={TBit} DELAY=7 COEFFICIENT=-0.000169723
+
+
+
+* 25 Gbps
+*Bsum SUM 0 V=V(N_3p)-V(M1)-V(M2)-V(M3)-V(M4)-V(M5)-V(M6)-V(M7)
+*Bcomp COMP 0 V=if(V(SUM)>176e-3, 1, 0)
+
+*xDFE1 COMP CLK 0 M1 INT1 DFE_BLOCK params: TB={TBit} DELAY=1 COEFFICIENT=0.0257636
+*xDFE2 INT1 CLK 0 M2 INT2 DFE_BLOCK params: TB={TBit} DELAY=2 COEFFICIENT=0.0252616
+*xDFE3 INT2 CLK 0 M3 INT3 DFE_BLOCK params: TB={TBit} DELAY=3 COEFFICIENT=0.00168302
+*xDFE4 INT3 CLK 0 M4 INT4 DFE_BLOCK params: TB={TBit} DELAY=4 COEFFICIENT=8.86435e-005
+*xDFE5 INT4 CLK 0 M5 INT5 DFE_BLOCK params: TB={TBit} DELAY=5 COEFFICIENT=0.000766006
+*xDFE6 INT5 CLK 0 M6 INT6 DFE_BLOCK params: TB={TBit} DELAY=6 COEFFICIENT=0.00778344
+*xDFE7 INT6 CLK 0 M7 INT7 DFE_BLOCK params: TB={TBit} DELAY=7 COEFFICIENT=0.00206756
+
+
+
 
 
 * Clock generator to synchrinize fir firter
-Vclk CLK 0 PULSE(0 1 0p 1p 1p {TB/2} {TB})
+Vclk CLK 0 PULSE(0 1 0p 1p 1p {TBit/2} {TBit})
 
 * Node1=V_in; Node2=V_clk; Node3=gnd; Node4=V_out
 .subckt DFE_BLOCK 1 2 3 4 5 params: TB=1 DELAY=1 COEFFICIENT=1
@@ -282,10 +315,17 @@ B2 5 3 V=delay(V(N001), 5p)
 A3 1 3 2 0 0 0 N001 0 SAMPLEHOLD
 .ends
 
-* Node1=V_in; Node2=V_clk; Node3=gnd; Node4=V_out
-*.subckt DFE_BLOCK 1 2 3 4 5 params: TB=1 DELAY=1 COEFFICIENT=1
-*R1 1 3 1e9
-*B1 4 3 V=delay(V(N001), {TB}*{DELAY})*{COEFFICIENT}
-*B2 5 3 V=delay(V(1), {TB})
-*A3 1 3 2 0 0 0 N001 0 SAMPLEHOLD
-*.ends
+
+* auxiliary subcircuit to generate a PRBS signal (rise time is zero!)
+* NRZ voltage swing: Vmax; Bit time: TB; Rise/Fall time: TR
+* Use (positive integer) seed to shift PRBS sequence forward (randomize)
+.subckt VPRBS 1 2 params: TB=1 Vmax=5 TR=0.1 seed=0
+.param T=2*TB F=1/T BR=1/TB
+* This generates a PRBS with zero rise times
+B1 a 0 V={Vmax}*(rand(time/{TB}+{seed})>=.5)
+R1 a 0 1
+* This generates a trapezoidal wave with desired rise/fall times
+* (it is a convolution with a pulse with {TR} width, exploiting the piecewise constant nature of signal B1)
+B2 1 2 V= (time/{TR}-{TB}*floor(time/{TB})/{TR})*V(a)  + ({TB}*floor(time/{TB})/{TR} - time/{TR} + 1) * absdelay(V(a),{TR})
+Ro 1 2 1
+.ends
