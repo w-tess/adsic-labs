@@ -20,6 +20,6 @@
 .TRAN 20n
 *.STEP PARAM R_s LIST 10 30
 *.STEP PARAM R_d LIST 85 50
-.SAVE V(D_1p) V(D_2p) V(D_3p) V(D_4p) V(D_5p) V(D_6p)
+*.SAVE V(D_1p) V(D_2p) V(D_3p) V(D_4p) V(D_5p) V(D_6p)
 
 .end

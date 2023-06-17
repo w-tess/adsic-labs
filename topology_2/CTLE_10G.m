@@ -24,7 +24,25 @@ end
 %figure(1)
 semilogx(spice(1,:), spice(2,:))
 hold on
-grid minor
 semilogx(spice(1,:), 20*log10(abs(tf)))
 semilogx(spice(1,:), spice(2,:)+20*log10(abs(tf)))
 xlim([2e7,40e9])
+
+plot(400e6, -12.33,'r*');
+text(400e6, -10, "DC: -12.30 dB");
+plot(5e9, -12.26,'r*');
+text(5e9, -10, "5 GHz: -12.26 dB");
+plot(10e9, -12.55,'r*');
+text(10e9, -10, "10 GHz: -12.55 dB");
+
+plot(5e9, -70,'bo');
+plot(7.5e9, -70,'b*');
+plot(15e9, -70,'b*');
+
+grid minor
+xlabel('Frequency (Hz)') 
+ylabel('Magnitude (dB)')
+legend('Original channel', 'CTLE', 'Equalized channel', 'location', 'southwest')
+title('Effect of CTLE on the channel response')
+xlim([1e8, 40e9])
+ylim([-70, 0])

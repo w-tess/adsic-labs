@@ -236,7 +236,7 @@ X_FE_term3
 + diffTermination4nodes
 
 
-.param Rs=10 Cd=0.1p Tbit=0.04e-9 Vp=1 Trise={Tbit*0.2}
+.param Rs=10 Cd=0.1p Tbit=0.2e-9 Vp=1 Trise={Tbit*0.2}
 * Driver (pure differential, no grounding here)
 .subckt diffDriver4nodes a_1 b_1 a_2 b_2
 R_s1 a_1 a_10 {Rs}
@@ -246,8 +246,8 @@ E_s2 a_20 b_2 drv 0 -0.5
 *Vdrv drv 0 DC 0 AC 1 pwl(0 0 10p 1 100n 1)
 *Vdrv drv 0 DC 0 AC 1 pwl(0 0 10p 1 40p 1 50p 0 100n 0)
 *Vdrv drv 0 DC 0 AC 1 pwl(0 0 20p 1 100p 1 120p 0 100n 0)
-*Vdrv drv 0 DC 0 AC 1 pwl(0 0 {Trise} 1 {Tbit} 1 {Tbit+Trise} 0 100n 0)
-xPRBS drv 0 VPRBS params: TB={TBit} Vmax={Vp} TR={Trise} seed=0
+Vdrv drv 0 DC 0 AC 1 pwl(0 0 {Trise} 1 {Tbit} 1 {Tbit+Trise} 0 100n 0)
+*xPRBS drv 0 VPRBS params: TB={TBit} Vmax={Vp} TR={Trise} seed=0
 Rdum drv 0 1
 .ends
 
@@ -259,27 +259,14 @@ C_d a_1 a_2 {Cd}
 
 
 * Parameters of the CTLE filter (5 Gbps and 10 Gbps)
-*.param A0=8.413951416451951e-01
-*.param wz=2*pi*5e9
-*.param wp1=2*pi*7.5e9
-*.param wp2=2*pi*15e9
+.param A0=8.413951416451951e-01
+.param wz=2*pi*5e9
+.param wp1=2*pi*7.5e9
+.param wp2=2*pi*15e9
 
 * CTLE filters instantitions
-*E1 CTLE_OUT 0 N_3p 0 Laplace= A0 * ( (1 + s/wz) / ( (1 + s/wp1) * (1 + s/wp1)) )
-*E2 CTLE_OUT_DIFF 0 N_4p 0 Laplace= A0 * ( (1 + s/wz) / ( (1 + s/wp1) * (1 + s/wp1)) )
-
-
-
-* Parameters of the CTLE filter (25 Gbps)
-.param A0=1.258925411794167e-01
-.param wz=2*pi*11e9
-.param wz2=2*pi*12e9
-.param wp1=2*pi*45e9
-.param wp2=2*pi*45e9
-
-* CTLE filters instantitions
-E1 CTLE_OUT 0 N_3p 0 Laplace= A0 * ( ((1 + s/wz) * (1 + s/wz2)) / ( (1 + s/wp1) * (1 + s/wp2) ) )
-E2 CTLE_OUT_DIFF 0 N_4p 0 Laplace= A0 * ( ((1 + s/wz) * (1 + s/wz2)) / ( (1 + s/wp1) * (1 + s/wp2) ) )
+E1 CTLE_OUT 0 N_3p 0 Laplace= A0 * ( (1 + s/wz) / ( (1 + s/wp1) * (1 + s/wp1)) )
+E2 CTLE_OUT_DIFF 0 N_4p 0 Laplace= A0 * ( (1 + s/wz) / ( (1 + s/wp1) * (1 + s/wp1)) )
 
 
 
