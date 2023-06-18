@@ -11,9 +11,9 @@
 *************************************************************
 * Include netlist with all components
 *.include ibm_topology_2.cir
-.include ibm_topology_2_DFE.cir
+*.include ibm_topology_2_DFE.cir
 *.include ibm_topology_2_CTLE.cir
-*.include ibm_topology_2_FFE.cir
+.include ibm_topology_2_FFE.cir
 *************************************************************
 
 *************************************************************
