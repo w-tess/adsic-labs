@@ -4,7 +4,7 @@ clear all
 
 %% 5 GHZ
 Tb = 0.2e-9;
-max = 3.63625e-010;
+max = 3.6138e-010;
 figure(1)
 fileID = fopen('./TRAN_simulations/ibm_topology_2_TRAN_dfe_5G.txt','r');
 fgetl(fileID);
