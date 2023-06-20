@@ -23,10 +23,13 @@ for i=1:(n_steps-1)
     plot(spice(1,:), spice(2,:))
 end
 
-xlim([0 0.6e-9])
+xlim([0 1e-9])
 grid minor
+xlabel('Time (s)') 
+ylabel('Output voltage (V)')
 legend(steps{:,:})
 title('Tran (Step Rs)')
+set(gcf,'position',[0, 0, 1000, 1000]);
 
 %% TRAN / STEP Cd
 
@@ -49,10 +52,13 @@ for i=1:(n_steps-1)
     plot(spice(1,:), spice(2,:))
 end
 
-xlim([0 0.6e-9])
+xlim([0 1e-9])
 grid minor
+xlabel('Time (s)') 
+ylabel('Output voltage (V)')
 legend(steps{:,:})
 title('Tran (Step Cd)')
+set(gcf,'position',[0, 0, 1000, 1000]);
 
 %% AC   / STEP Rs
 
@@ -76,8 +82,12 @@ for i=1:(n_steps-1)
 end
 
 grid minor
+xlabel('Frequency (Hz)') 
+ylabel('V(D_3p) (dB)')
 legend(steps{:,:})
 title('AC (Step Rs)')
+xlim([1e8, 40e9])
+set(gcf,'position',[0, 0, 1000, 1000]);
 
 %% AC   / STEP Cd
 
@@ -101,5 +111,9 @@ for i=1:(n_steps-1)
 end
 
 grid minor
+xlabel('Frequency (Hz)') 
+ylabel('V(D_3p) (dB)')
 legend(steps{:,:})
 title('AC (Step Cd)')
+xlim([1e8, 40e9])
+set(gcf,'position',[0, 0, 1000, 1000]);

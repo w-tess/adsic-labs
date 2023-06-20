@@ -27,8 +27,12 @@ fgetl(fileID);
 semilogx(spice(1,:), spice(2,:))
 
 grid minor
+xlabel('Frequency (Hz)') 
+ylabel('V(D_3p) (dB)')
 legend('1H', '5H', '1L', '5L')
 title('AC (C4 escape H)')
+xlim([1e8, 40e9])
+set(gcf,'position',[0, 0, 1000, 1000]);
 
 
 %% AC (Driver L)
@@ -55,8 +59,12 @@ fgetl(fileID);
 semilogx(spice(1,:), spice(2,:))
 
 grid minor
+xlabel('Frequency (Hz)') 
+ylabel('V(D_3p) (dB)')
 legend('1H', '5H', '1L', '5L')
 title('AC (C4 escape L)')
+xlim([1e8, 40e9])
+set(gcf,'position',[0, 0, 1000, 1000]);
 
 %% Tran (Driver H)
 figure(3)
@@ -82,8 +90,11 @@ fgetl(fileID);
 plot(spice(1,:), spice(2,:))
 
 grid minor
+xlabel('Time (s)') 
+ylabel('Output voltage (V)')
 legend('1H', '5H', '1L', '5L')
 title('Tran (C4 escape H)')
+set(gcf,'position',[0, 0, 1000, 1000]);
 
 %% Tran (Driver L)
 figure(4)
@@ -109,8 +120,11 @@ fgetl(fileID);
 plot(spice(1,:), spice(2,:))
 
 grid minor
+xlabel('Time (s)') 
+ylabel('Output voltage (V)')
 legend('1H', '5H', '1L', '5L')
 title('Tran (C4 escape L)')
+set(gcf,'position',[0, 0, 1000, 1000]);
 
 %% Tran (Long pulse)
 figure(5)
@@ -120,6 +134,7 @@ fgetl(fileID);
 plot(spice(1,:), spice(2,:))
 
 grid minor
-legend('1L')
-title('Tran (Long pulse)')
-xlim([0 1e-9])
+xlabel('Time (s)') 
+ylabel('Output voltage (V)')
+title('Tran (100 ps pulse)')
+set(gcf,'position',[0, 0, 1000, 1000]);

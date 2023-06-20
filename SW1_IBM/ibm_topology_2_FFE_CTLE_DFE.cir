@@ -236,7 +236,7 @@ X_FE_term3
 + diffTermination4nodes
 
 
-.param Rs=10 Cd=0.1p Tbit=0.1e-9 Vp=1 Trise={Tbit*0.2}
+.param Rs=10 Cd=0.1p Tbit=0.04e-9 Vp=1 Trise={Tbit*0.2}
 * Driver (pure differential, no grounding here)
 .subckt diffDriver4nodes a_1 b_1 a_2 b_2
 R_s1 a_1 a_10 {Rs}
@@ -246,8 +246,8 @@ E_s2 a_20 b_2 drv 0 -0.5
 *Vdrv drv 0 DC 0 AC 1 pwl(0 0 10p 1 100n 1)
 *Vdrv drv 0 DC 0 AC 1 pwl(0 0 10p 1 40p 1 50p 0 100n 0)
 *Vdrv drv 0 DC 0 AC 1 pwl(0 0 20p 1 100p 1 120p 0 100n 0)
-Vdrv drv 0 DC 0 AC 1 pwl(0 0 {Trise} 1 {Tbit} 1 {Tbit+Trise} 0 100n 0)
-*xPRBS drv 0 VPRBS params: TB={TBit} Vmax={Vp} TR={Trise} seed=0
+*Vdrv drv 0 DC 0 AC 1 pwl(0 0 {Trise} 1 {Tbit} 1 {Tbit+Trise} 0 100n 0)
+xPRBS drv 0 VPRBS params: TB={TBit} Vmax={Vp} TR={Trise} seed=0
 Rdum drv 0 1
 .ends
 
@@ -296,20 +296,20 @@ E2 CTLE_OUT_DIFF 0 N_4p 0 Laplace= A0 * ( (1 + s/wz) / ( (1 + s/wp1) * (1 + s/wp
 
 * 10 Gbps
 Bsum2 SUM 0 V=V(CTLE_OUT)-V(MD1)-V(MD2)-V(MD3)-V(MD4)-V(MD5)-V(MD6)-V(MD7)
-Bcomp COMP 0 V=if(V(SUM)>182e-3, 1, 0)
+Bcomp COMP 0 V=if(V(SUM)>105e-3, 1, 0)
 
-xDFE1 COMP CLK2 0 MD1 INT_D1 DFE_BLOCK params: TB={TBit} DELAY=1 COEFFICIENT=-0.00350229
-xDFE2 INT_D1 CLK2 0 MD2 INT_D2 DFE_BLOCK params: TB={TBit} DELAY=2 COEFFICIENT=0.00184114
-xDFE3 INT_D2 CLK2 0 MD3 INT_D3 DFE_BLOCK params: TB={TBit} DELAY=3 COEFFICIENT=-0.00166792
-xDFE4 INT_D3 CLK2 0 MD4 INT_D4 DFE_BLOCK params: TB={TBit} DELAY=4 COEFFICIENT=9.36382e-005
-xDFE5 INT_D4 CLK2 0 MD5 INT_D5 DFE_BLOCK params: TB={TBit} DELAY=5 COEFFICIENT=0.00691315
-xDFE6 INT_D5 CLK2 0 MD6 INT_D6 DFE_BLOCK params: TB={TBit} DELAY=6 COEFFICIENT=-0.00777735
-xDFE7 INT_D6 CLK2 0 MD7 INT_D7 DFE_BLOCK params: TB={TBit} DELAY=7 COEFFICIENT=0.00554978
+xDFE1 COMP CLK2 0 MD1 INT_D1 DFE_BLOCK params: TB={TBit} DELAY=1 COEFFICIENT=0.0019563
+xDFE2 INT_D1 CLK2 0 MD2 INT_D2 DFE_BLOCK params: TB={TBit} DELAY=2 COEFFICIENT=-0.00407831
+xDFE3 INT_D2 CLK2 0 MD3 INT_D3 DFE_BLOCK params: TB={TBit} DELAY=3 COEFFICIENT=0.00206329
+xDFE4 INT_D3 CLK2 0 MD4 INT_D4 DFE_BLOCK params: TB={TBit} DELAY=4 COEFFICIENT=0.00112498
+xDFE5 INT_D4 CLK2 0 MD5 INT_D5 DFE_BLOCK params: TB={TBit} DELAY=5 COEFFICIENT=0.00165164
+xDFE6 INT_D5 CLK2 0 MD6 INT_D6 DFE_BLOCK params: TB={TBit} DELAY=6 COEFFICIENT=-0.00305404
+xDFE7 INT_D6 CLK2 0 MD7 INT_D7 DFE_BLOCK params: TB={TBit} DELAY=7 COEFFICIENT=0.004603
 
 
 
 * Clock generator to synchrinize fir firter
-Vclk2 CLK2 0 PULSE(0 1 {Tbit/4} 1p 1p {TBit/2} {TBit})
+Vclk2 CLK2 0 PULSE(0 1 {Tbit/4+6p} 1p 1p {TBit/2} {TBit})
 
 
 

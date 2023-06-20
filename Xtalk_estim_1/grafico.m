@@ -77,6 +77,7 @@ xlabel('Time (s)')
 ylabel('Voltage (V)')
 title('Far end voltages of the three lines at 28.7 GHz (phase shift between drivers = 0°)')
 xlim([1e-9, 1.2e-9])
+set(gcf,'position',[0, 0, 1000, 1000]);
 
 
 figure(4)
@@ -94,6 +95,6 @@ xlabel('Time (s)')
 ylabel('Voltage (V)')
 title('Far end voltages of the three lines at 28.7 GHz (phase shift between drivers = 180°)')
 xlim([1e-9, 1.2e-9])
-
+set(gcf,'position',[0, 0, 1000, 1000]);
 
 
