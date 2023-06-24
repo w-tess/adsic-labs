@@ -71,20 +71,20 @@ line = fgetl(fileID);
 n_steps = extractBetween(line, "/", ")");
 n_steps = str2double(n_steps{1});
 steps = [steps extractBetween(line, ": ", "  ")];
-[spice] = fscanf(fileID, '%f (%fdB,%*fÂ°)', [2, inf]);
+[spice] = fscanf(fileID, '%f (%fdB,%*f°)', [2, inf]);
 semilogx(spice(1,:), spice(2,:))
 hold on
 
 for i=1:(n_steps-1)
     steps = [steps extractBetween(fgetl(fileID), ": ","  ")];
-    [spice] = fscanf(fileID, '%f (%fdB,%*fÂ°)', [2, inf]);
+    [spice] = fscanf(fileID, '%f (%fdB,%*f°)', [2, inf]);
     semilogx(spice(1,:), spice(2,:))
 end
 
 grid minor
 xlabel('Frequency (Hz)') 
 ylabel('V(D_3p) (dB)')
-legend(steps{:,:})
+legend(steps{:,:}, 'location', 'southwest')
 title('AC (Step Rs)')
 xlim([1e8, 40e9])
 set(gcf,'position',[0, 0, 1000, 1000]);
@@ -100,20 +100,20 @@ line = fgetl(fileID);
 n_steps = extractBetween(line, "/", ")");
 n_steps = str2double(n_steps{1});
 steps = [steps extractBetween(line, ": ", "  ")];
-[spice] = fscanf(fileID, '%f (%fdB,%*fÂ°)', [2, inf]);
+[spice] = fscanf(fileID, '%f (%fdB,%*f°)', [2, inf]);
 semilogx(spice(1,:), spice(2,:))
 hold on
 
 for i=1:(n_steps-1)
     steps = [steps extractBetween(fgetl(fileID), ": ","  ")];
-    [spice] = fscanf(fileID, '%f (%fdB,%*fÂ°)', [2, inf]);
+    [spice] = fscanf(fileID, '%f (%fdB,%*f°)', [2, inf]);
     semilogx(spice(1,:), spice(2,:))
 end
 
 grid minor
 xlabel('Frequency (Hz)') 
 ylabel('V(D_3p) (dB)')
-legend(steps{:,:})
+legend(steps{:,:}, 'location', 'southwest')
 title('AC (Step Cd)')
 xlim([1e8, 40e9])
 set(gcf,'position',[0, 0, 1000, 1000]);
